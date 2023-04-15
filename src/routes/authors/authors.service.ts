@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { AuthorRepository } from 'src/database/repositories';
 
 @Injectable()
 export class AuthorsService {
-  create(createAuthorDto: CreateAuthorDto) {
-    return 'This action adds a new author';
+  constructor(private authorRepository: AuthorRepository) {}
+
+  async create(createAuthorDto: CreateAuthorDto) {
+    return await this.authorRepository.save(
+      this.authorRepository.create(createAuthorDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all authors`;
+  async findAll() {
+    return await this.authorRepository.getAuthors();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} author`;
+  async findOne(authorId: string) {
+    const authorFound = await this.authorRepository.getAuthor(authorId);
+    if (!authorFound) throw new NotFoundException('author not found');
+    return authorFound;
   }
 
-  update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return `This action updates a #${id} author`;
+  async update(authorId: string, updateAuthorDto: UpdateAuthorDto) {
+    const authorFound = await this.authorRepository.getAuthor(authorId);
+    if (!authorFound) throw new NotFoundException('author not found');
+    return await this.authorRepository.update(
+      { id: authorId },
+      { ...updateAuthorDto },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} author`;
+  async remove(authorId: string) {
+    const authorFound = await this.authorRepository.getAuthor(authorId);
+    if (!authorFound) throw new NotFoundException('author not found');
+    return await this.authorRepository.update(
+      { id: authorId },
+      { deleted_at: new Date(), is_deleted: true },
+    );
   }
 }

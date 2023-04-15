@@ -4,11 +4,11 @@ import {} from '.';
 import {} from '../enums';
 
 @Entity()
-export class Editorial extends BaseEntity {
+export class Author extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   name: string;
   @Column()
-  description: string;
+  lastname: string;
 }
