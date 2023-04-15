@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEditorialDto } from './dto/create-editorial.dto';
 import { UpdateEditorialDto } from './dto/update-editorial.dto';
+import { EditorialRepository } from 'src/database/repositories';
 
 @Injectable()
 export class EditorialsService {
-  create(createEditorialDto: CreateEditorialDto) {
-    return 'This action adds a new editorial';
+  constructor(private editorialRepository: EditorialRepository) {}
+
+  async create(createEditorialDto: CreateEditorialDto) {
+    return await this.editorialRepository.save(
+      this.editorialRepository.create(createEditorialDto),
+    );
   }
 
-  findAll() {
-    return `This action returns all editorials`;
+  async findAll() {
+    return await this.editorialRepository.getEditorials();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} editorial`;
+  async findOne(editorialId: string) {
+    const editorialFound = await this.editorialRepository.getEditorial(
+      editorialId,
+    );
+    if (!editorialFound) throw new NotFoundException('editorial not found');
+    return editorialFound;
   }
 
-  update(id: number, updateEditorialDto: UpdateEditorialDto) {
-    return `This action updates a #${id} editorial`;
+  async update(editorialId: string, updateEditorialDto: UpdateEditorialDto) {
+    const editorialFound = await this.editorialRepository.getEditorial(
+      editorialId,
+    );
+    if (!editorialFound) throw new NotFoundException('editorial not found');
+    return await this.editorialRepository.update(
+      { id: editorialId },
+      { ...updateEditorialDto },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} editorial`;
+  async remove(editorialId: string) {
+    const editorialFound = await this.editorialRepository.getEditorial(
+      editorialId,
+    );
+    if (!editorialFound) throw new NotFoundException('editorial not found');
+    return await this.editorialRepository.update(
+      { id: editorialId },
+      { deleted_at: new Date(), is_deleted: true },
+    );
   }
 }

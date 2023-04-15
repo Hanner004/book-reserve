@@ -12,6 +12,7 @@ import { AccessTokenStrategy } from 'src/utils/strategies/jwt/accessToken.strate
 import { RefreshTokenStrategy } from 'src/utils/strategies/jwt/refreshToken.strategy';
 
 import { DatabaseModule } from './database/database.module';
+import { EditorialsModule } from './routes/editorials/editorials.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { DatabaseModule } from './database/database.module';
     }),
     { ...JwtModule.register({}), global: true },
     DatabaseModule,
-    // UsersModule,
+    EditorialsModule,
   ],
   controllers: [AppController],
   providers: [

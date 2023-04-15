@@ -16,6 +16,7 @@ interface IError {
 @Catch()
 export class ExceptionFiltering implements ExceptionFilter {
   constructor(private readonly logger: LoggerService) {}
+
   catch(exception: any, host: ArgumentsHost) {
 
     const ctx = host.switchToHttp();
