@@ -14,6 +14,7 @@ import { RefreshTokenStrategy } from 'src/utils/strategies/jwt/refreshToken.stra
 import { DatabaseModule } from './database/database.module';
 import { EditorialsModule } from './routes/editorials/editorials.module';
 import { AuthorsModule } from './routes/authors/authors.module';
+import { BooksModule } from './routes/books/books.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthorsModule } from './routes/authors/authors.module';
     DatabaseModule,
     EditorialsModule,
     AuthorsModule,
+    BooksModule,
   ],
   controllers: [AppController],
   providers: [
