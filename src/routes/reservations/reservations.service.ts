@@ -16,7 +16,7 @@ import {
 export class ReservationsService {
   constructor(
     private reservationRepository: ReservationRepository,
-    private BookRepository: BookRepository,
+    private bookRepository: BookRepository,
     private clientRepository: ClientRepository,
   ) {}
 
@@ -25,7 +25,7 @@ export class ReservationsService {
       where: { dni: client_dni },
     });
     if (!clientFound) throw new NotFoundException('client not found');
-    const bookFound = await this.BookRepository.findOne({
+    const bookFound = await this.bookRepository.findOne({
       where: { id: bookId },
     });
     if (!bookFound) throw new NotFoundException('book not found');
@@ -59,8 +59,42 @@ export class ReservationsService {
 
   async update(
     reservationId: string,
-    updateReservationDto: UpdateReservationDto,
-  ) {}
+    { bookId, client_dni, is_busy }: UpdateReservationDto,
+  ) {
+    const reservationFound = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+    });
+    if (!reservationFound) throw new NotFoundException('reservation not found');
+    const bookFound = await this.bookRepository.findOne({
+      where: { id: bookId },
+    });
+    if (!bookFound) throw new NotFoundException('book not found');
+    const clientFound = await this.clientRepository.findOne({
+      where: { dni: client_dni },
+    });
+    if (!clientFound) throw new NotFoundException('client not found');
+    return await this.reservationRepository.update(
+      { id: reservationId },
+      {
+        book: bookFound,
+        client: clientFound,
+        is_busy,
+      },
+    );
+  }
 
-  async remove(reservationId: string) {}
+  async remove(reservationId: string) {
+    const reservationFound = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+    });
+    if (!reservationFound) throw new NotFoundException('reservation not found');
+    return await this.reservationRepository.update(
+      { id: reservationId },
+      {
+        deleted_at: new Date(),
+        is_deleted: true,
+        is_busy: false,
+      },
+    );
+  }
 }

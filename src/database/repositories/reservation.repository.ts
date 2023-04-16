@@ -21,8 +21,7 @@ export class ReservationRepository extends Repository<Reservation> {
     return await this.createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.client', 'client')
       .leftJoinAndSelect('reservation.book', 'book')
-      .where('reservation.is_busy = :is_busy', { is_busy: true })
-      .andWhere('reservation.id = :reservationId', { reservationId })
+      .where('reservation.id = :reservationId', { reservationId })
       .getRawOne();
   }
 
