@@ -24,17 +24,17 @@ export class BooksController {
 
   @Post()
   async create(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.create(createBookDto);
+    return await this.booksService.create(createBookDto);
   }
 
   @Get()
   async findAll() {
-    return this.booksService.findAll();
+    return await this.booksService.findAll();
   }
 
   @Get('/:bookId')
   async findOne(@Param('bookId', ParseUUIDPipe) bookId: string) {
-    return this.booksService.findOne(bookId);
+    return await this.booksService.findOne(bookId);
   }
 
   @Put('/:bookId')
@@ -42,11 +42,11 @@ export class BooksController {
     @Param('bookId', ParseUUIDPipe) bookId: string,
     @Body() updateBookDto: UpdateBookDto,
   ) {
-    return this.booksService.update(bookId, updateBookDto);
+    return await this.booksService.update(bookId, updateBookDto);
   }
 
   @Delete('/:bookId')
   async remove(@Param('bookId', ParseUUIDPipe) bookId: string) {
-    return this.booksService.remove(bookId);
+    return await this.booksService.remove(bookId);
   }
 }

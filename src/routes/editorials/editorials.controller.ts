@@ -24,17 +24,17 @@ export class EditorialsController {
 
   @Post()
   async create(@Body() createEditorialDto: CreateEditorialDto) {
-    return this.editorialsService.create(createEditorialDto);
+    return await this.editorialsService.create(createEditorialDto);
   }
 
   @Get()
   async findAll() {
-    return this.editorialsService.findAll();
+    return await this.editorialsService.findAll();
   }
 
   @Get('/:editorialId')
   async findOne(@Param('editorialId', ParseUUIDPipe) editorialId: string) {
-    return this.editorialsService.findOne(editorialId);
+    return await this.editorialsService.findOne(editorialId);
   }
 
   @Put('/:editorialId')
@@ -42,11 +42,11 @@ export class EditorialsController {
     @Param('editorialId', ParseUUIDPipe) editorialId: string,
     @Body() updateEditorialDto: UpdateEditorialDto,
   ) {
-    return this.editorialsService.update(editorialId, updateEditorialDto);
+    return await this.editorialsService.update(editorialId, updateEditorialDto);
   }
 
   @Delete('/:editorialId')
   async remove(@Param('editorialId', ParseUUIDPipe) editorialId: string) {
-    return this.editorialsService.remove(editorialId);
+    return await this.editorialsService.remove(editorialId);
   }
 }

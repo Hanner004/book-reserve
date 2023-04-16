@@ -24,17 +24,17 @@ export class AuthorsController {
 
   @Post()
   async create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorsService.create(createAuthorDto);
+    return await this.authorsService.create(createAuthorDto);
   }
 
   @Get()
   async findAll() {
-    return this.authorsService.findAll();
+    return await this.authorsService.findAll();
   }
 
   @Get('/:authorId')
   async findOne(@Param('authorId', ParseUUIDPipe) authorId: string) {
-    return this.authorsService.findOne(authorId);
+    return await this.authorsService.findOne(authorId);
   }
 
   @Put('/:authorId')
@@ -42,11 +42,11 @@ export class AuthorsController {
     @Param('authorId', ParseUUIDPipe) authorId: string,
     @Body() updateAuthorDto: UpdateAuthorDto,
   ) {
-    return this.authorsService.update(authorId, updateAuthorDto);
+    return await this.authorsService.update(authorId, updateAuthorDto);
   }
 
   @Delete('/:authorId')
   async remove(@Param('authorId', ParseUUIDPipe) authorId: string) {
-    return this.authorsService.remove(authorId);
+    return await this.authorsService.remove(authorId);
   }
 }
