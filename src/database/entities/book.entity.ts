@@ -10,9 +10,9 @@ export class Book extends BaseEntity {
   @Column()
   name: string;
   @Column()
-  availableQuantity: number;
+  available_quantity: number;
   @Column()
-  libraryLocation: string;
+  library_location: string;
   @ManyToOne(() => Author, (author) => author.books)
   author: Author;
   @ManyToOne(() => Editorial, (editorial) => editorial.books)

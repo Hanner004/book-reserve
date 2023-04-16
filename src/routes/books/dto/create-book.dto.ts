@@ -16,11 +16,11 @@ export class CreateBookDto {
   @IsPositive()
   @IsInt()
   @IsNotEmpty()
-  availableQuantity: number;
+  available_quantity: number;
   @ApiProperty({ example: 'MESA #1' })
   @IsString()
   @IsNotEmpty()
-  libraryLocation: string;
+  library_location: string;
   @ApiProperty({ example: 'UUID' })
   @IsUUID('all', { each: true })
   @IsNotEmpty()
