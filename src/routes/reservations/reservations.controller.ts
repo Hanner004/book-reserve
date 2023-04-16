@@ -8,12 +8,14 @@ import {
   UseGuards,
   ParseUUIDPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { QueryReservationsDto } from './dto/query-reservations.dto';
 
 // @UseGuards(AccessTokenGuard)
 // @ApiBearerAuth()
@@ -28,8 +30,8 @@ export class ReservationsController {
   }
 
   @Get()
-  async findAll() {
-    return await this.reservationsService.findAll();
+  async findAll(@Query() data: QueryReservationsDto) {
+    return await this.reservationsService.findAll(data);
   }
 
   @Get('/:reservationId')
