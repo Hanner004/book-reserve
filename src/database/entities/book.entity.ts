@@ -1,6 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from './shared/base.entity';
-import { Author, Editorial } from '../entities';
+import { Author, Editorial, Reservation } from '../entities';
 import {} from '../enums';
 
 @Entity()
@@ -17,4 +23,6 @@ export class Book extends BaseEntity {
   author: Author;
   @ManyToOne(() => Editorial, (editorial) => editorial.books)
   editorial: Editorial;
+  @OneToMany(() => Reservation, (reservation) => reservation.book)
+  reservations: Reservation[];
 }

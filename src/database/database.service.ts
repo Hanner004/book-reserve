@@ -1,4 +1,5 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as entities from './entities';
 
@@ -10,14 +11,18 @@ export const databaseProvider = TypeOrmModule.forRootAsync({
   useFactory: (configService: ConfigService) => {
     return {
       type: 'postgres',
-      host: configService.get('PGHOST'),
-      port: configService.get('PGPORT'),
-      username: configService.get('PGUSER'),
-      password: configService.get('PGPASSWORD'),
-      database: configService.get('PGDATABASE'),
+      host: configService.get<string>('PGHOST'),
+      port: configService.get<number>('PGPORT'),
+      username: configService.get<string>('PGUSER'),
+      password: configService.get<string>('PGPASSWORD'),
+      database: configService.get<string>('PGDATABASE'),
       logging: false,
       entities: entitiesLists,
       synchronize: false,
+      then: Logger.debug(
+        `postgres host:${configService.get<string>('PGHOST')}`,
+        `DB =>`,
+      ),
     };
   },
 });
