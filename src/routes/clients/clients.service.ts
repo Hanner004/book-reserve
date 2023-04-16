@@ -4,6 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
+import { QueryClientsDto } from './dto/query-clients.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientRepository } from 'src/database/repositories';
 
@@ -21,12 +22,18 @@ export class ClientsService {
     }
   }
 
-  async findAll() {
-    return await this.clientRepository.getClients();
+  async findAll(data: QueryClientsDto) {
+    return await this.clientRepository.getClients(data.client_dni);
   }
 
   async findOne(clientId: string) {
     const clientFound = await this.clientRepository.getClient(clientId);
+    if (!clientFound) throw new NotFoundException('client not found');
+    return clientFound;
+  }
+
+  async findOneByDNI(client_dni: string) {
+    const clientFound = await this.clientRepository.getClientByDNI(client_dni);
     if (!clientFound) throw new NotFoundException('client not found');
     return clientFound;
   }

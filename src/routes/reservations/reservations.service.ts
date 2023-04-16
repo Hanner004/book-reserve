@@ -20,15 +20,15 @@ export class ReservationsService {
     private clientRepository: ClientRepository,
   ) {}
 
-  async create({ bookId, client_dni }: CreateReservationDto) {
-    const clientFound = await this.clientRepository.findOne({
-      where: { dni: client_dni },
-    });
-    if (!clientFound) throw new NotFoundException('client not found');
+  async create({ bookId, clientId }: CreateReservationDto) {
     const bookFound = await this.bookRepository.findOne({
       where: { id: bookId },
     });
     if (!bookFound) throw new NotFoundException('book not found');
+    const clientFound = await this.clientRepository.findOne({
+      where: { id: clientId },
+    });
+    if (!clientFound) throw new NotFoundException('client not found');
     const { number_reservations } =
       await this.reservationRepository.getNumberOfBookReservations(bookId);
     const currentQuantity = bookFound.available_quantity - number_reservations;
@@ -37,15 +37,15 @@ export class ReservationsService {
     }
     return await this.reservationRepository.createReservation(
       this.reservationRepository.create(),
-      clientFound,
       bookFound,
+      clientFound,
     );
   }
 
   async findAll(data: QueryReservationsDto) {
     return await this.reservationRepository.getReservations(
       data.bookId,
-      data.client_dni,
+      data.clientId,
     );
   }
 
@@ -59,7 +59,7 @@ export class ReservationsService {
 
   async update(
     reservationId: string,
-    { bookId, client_dni, is_busy }: UpdateReservationDto,
+    { bookId, clientId, is_busy }: UpdateReservationDto,
   ) {
     const reservationFound = await this.reservationRepository.findOne({
       where: { id: reservationId },
@@ -70,7 +70,7 @@ export class ReservationsService {
     });
     if (!bookFound) throw new NotFoundException('book not found');
     const clientFound = await this.clientRepository.findOne({
-      where: { dni: client_dni },
+      where: { id: clientId },
     });
     if (!clientFound) throw new NotFoundException('client not found');
     return await this.reservationRepository.update(

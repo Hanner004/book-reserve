@@ -6,8 +6,8 @@ export class CreateReservationDto {
   @IsUUID('all', { each: true })
   @IsNotEmpty()
   bookId: string;
-  @ApiProperty({ example: 'DNI' })
+  @ApiProperty({ example: 'UUID' })
   @IsString()
   @IsNotEmpty()
-  client_dni: string;
+  clientId: string;
 }
