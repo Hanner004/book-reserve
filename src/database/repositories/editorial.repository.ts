@@ -7,7 +7,7 @@ export class EditorialRepository extends Repository<Editorial> {
     return await this.createQueryBuilder('editorial').getRawMany();
   }
 
-  async getEditorial(editorialId: string) {
+  async getEditorial(editorialId: number) {
     return await this.createQueryBuilder('editorial')
       .where('editorial.id = :editorialId', { editorialId })
       .getRawOne();

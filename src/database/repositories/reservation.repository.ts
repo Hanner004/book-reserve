@@ -3,7 +3,7 @@ import { Reservation, Client, Book } from '../entities';
 
 @EntityRepository(Reservation)
 export class ReservationRepository extends Repository<Reservation> {
-  async getReservations(bookId: string, clientId: string) {
+  async getReservations(bookId: number, clientId: number) {
     const query = this.createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.book', 'book')
       .leftJoinAndSelect('reservation.client', 'client')
@@ -19,7 +19,7 @@ export class ReservationRepository extends Repository<Reservation> {
     return await query.getRawMany();
   }
 
-  async getReservation(reservationId: string) {
+  async getReservation(reservationId: number) {
     return await this.createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.book', 'book')
       .leftJoinAndSelect('reservation.client', 'client')
@@ -29,7 +29,7 @@ export class ReservationRepository extends Repository<Reservation> {
       .getRawOne();
   }
 
-  async getNumberOfBookReservations(bookId: string) {
+  async getNumberOfBookReservations(bookId: number) {
     const response = await this.createQueryBuilder('reservation')
       .select('COALESCE(COUNT(*), 0) AS number_reservations')
       .leftJoin('reservation.book', 'book')

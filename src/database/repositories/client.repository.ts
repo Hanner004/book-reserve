@@ -11,7 +11,7 @@ export class ClientRepository extends Repository<Client> {
     return await query.getRawMany();
   }
 
-  async getClient(clientId: string) {
+  async getClient(clientId: number) {
     return await this.createQueryBuilder('client')
       .where('client.id = :clientId', { clientId })
       .getRawOne();

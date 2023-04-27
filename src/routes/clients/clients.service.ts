@@ -26,7 +26,7 @@ export class ClientsService {
     return await this.clientRepository.getClients(data.client_dni);
   }
 
-  async findOne(clientId: string) {
+  async findOne(clientId: number) {
     const clientFound = await this.clientRepository.getClient(clientId);
     if (!clientFound) throw new NotFoundException('client not found');
     return clientFound;
@@ -38,7 +38,7 @@ export class ClientsService {
     return clientFound;
   }
 
-  async update(clientId: string, updateClientDto: UpdateClientDto) {
+  async update(clientId: number, updateClientDto: UpdateClientDto) {
     const clientFound = await this.clientRepository.getClient(clientId);
     if (!clientFound) throw new NotFoundException('client not found');
     return await this.clientRepository.update(
@@ -47,7 +47,7 @@ export class ClientsService {
     );
   }
 
-  async remove(clientId: string) {
+  async remove(clientId: number) {
     const clientFound = await this.clientRepository.getClient(clientId);
     if (!clientFound) throw new NotFoundException('client not found');
     return await this.clientRepository.update(

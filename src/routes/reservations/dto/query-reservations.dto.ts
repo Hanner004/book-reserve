@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsNumberString } from 'class-validator';
 
 export class QueryReservationsDto {
   @ApiProperty({ required: false })
-  @IsUUID('all', { each: true })
+  @IsNumberString()
   @IsOptional()
-  bookId: string;
+  bookId: number;
   @ApiProperty({ required: false })
-  @IsUUID('all', { each: true })
+  @IsNumberString()
   @IsOptional()
-  clientId: string;
+  clientId: number;
 }

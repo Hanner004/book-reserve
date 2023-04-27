@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseUUIDPipe,
+  ParseIntPipe,
   Put,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
@@ -33,20 +33,20 @@ export class BooksController {
   }
 
   @Get('/:bookId')
-  async findOne(@Param('bookId', ParseUUIDPipe) bookId: string) {
+  async findOne(@Param('bookId', ParseIntPipe) bookId: number) {
     return await this.booksService.findOne(bookId);
   }
 
   @Put('/:bookId')
   async update(
-    @Param('bookId', ParseUUIDPipe) bookId: string,
+    @Param('bookId', ParseIntPipe) bookId: number,
     @Body() updateBookDto: UpdateBookDto,
   ) {
     return await this.booksService.update(bookId, updateBookDto);
   }
 
   @Delete('/:bookId')
-  async remove(@Param('bookId', ParseUUIDPipe) bookId: string) {
+  async remove(@Param('bookId', ParseIntPipe) bookId: number) {
     return await this.booksService.remove(bookId);
   }
 }

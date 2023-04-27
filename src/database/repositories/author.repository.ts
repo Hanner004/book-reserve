@@ -7,7 +7,7 @@ export class AuthorRepository extends Repository<Author> {
     return await this.createQueryBuilder('author').getRawMany();
   }
 
-  async getAuthor(authorId: string) {
+  async getAuthor(authorId: number) {
     return await this.createQueryBuilder('author')
       .where('author.id = :authorId', { authorId })
       .getRawOne();

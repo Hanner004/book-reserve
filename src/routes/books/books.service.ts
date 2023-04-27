@@ -43,14 +43,14 @@ export class BooksService {
     return await this.bookRepository.getBooks();
   }
 
-  async findOne(bookId: string) {
+  async findOne(bookId: number) {
     const bookFound = await this.bookRepository.getBook(bookId);
     if (!bookFound) throw new NotFoundException('book not found');
     return bookFound;
   }
 
   async update(
-    bookId: string,
+    bookId: number,
     { authorId, editorialId, ...updateBookDto }: UpdateBookDto,
   ) {
     const bookFound = await this.bookRepository.getBook(bookId);
@@ -73,7 +73,7 @@ export class BooksService {
     );
   }
 
-  async remove(bookId: string) {
+  async remove(bookId: number) {
     const bookFound = await this.bookRepository.getBook(bookId);
     if (!bookFound) throw new NotFoundException('book not found');
     return await this.bookRepository.update(

@@ -30,7 +30,7 @@ export class BookRepository extends Repository<Book> {
       .getRawMany();
   }
 
-  async getBook(bookId: string) {
+  async getBook(bookId: number) {
     return await this.createQueryBuilder('book')
       .leftJoinAndSelect('book.author', 'author')
       .leftJoinAndSelect('book.editorial', 'editorial')

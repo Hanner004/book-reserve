@@ -5,8 +5,8 @@ import {} from '../enums';
 
 @Entity()
 export class Editorial extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
   @Column()
   name: string;
   @Column()

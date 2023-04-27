@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseUUIDPipe,
+  ParseIntPipe,
   Put,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
@@ -33,20 +33,20 @@ export class AuthorsController {
   }
 
   @Get('/:authorId')
-  async findOne(@Param('authorId', ParseUUIDPipe) authorId: string) {
+  async findOne(@Param('authorId', ParseIntPipe) authorId: number) {
     return await this.authorsService.findOne(authorId);
   }
 
   @Put('/:authorId')
   async update(
-    @Param('authorId', ParseUUIDPipe) authorId: string,
+    @Param('authorId', ParseIntPipe) authorId: number,
     @Body() updateAuthorDto: UpdateAuthorDto,
   ) {
     return await this.authorsService.update(authorId, updateAuthorDto);
   }
 
   @Delete('/:authorId')
-  async remove(@Param('authorId', ParseUUIDPipe) authorId: string) {
+  async remove(@Param('authorId', ParseIntPipe) authorId: number) {
     return await this.authorsService.remove(authorId);
   }
 }

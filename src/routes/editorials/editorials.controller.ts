@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseUUIDPipe,
+  ParseIntPipe,
   Put,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
@@ -33,20 +33,20 @@ export class EditorialsController {
   }
 
   @Get('/:editorialId')
-  async findOne(@Param('editorialId', ParseUUIDPipe) editorialId: string) {
+  async findOne(@Param('editorialId', ParseIntPipe) editorialId: number) {
     return await this.editorialsService.findOne(editorialId);
   }
 
   @Put('/:editorialId')
   async update(
-    @Param('editorialId', ParseUUIDPipe) editorialId: string,
+    @Param('editorialId', ParseIntPipe) editorialId: number,
     @Body() updateEditorialDto: UpdateEditorialDto,
   ) {
     return await this.editorialsService.update(editorialId, updateEditorialDto);
   }
 
   @Delete('/:editorialId')
-  async remove(@Param('editorialId', ParseUUIDPipe) editorialId: string) {
+  async remove(@Param('editorialId', ParseIntPipe) editorialId: number) {
     return await this.editorialsService.remove(editorialId);
   }
 }

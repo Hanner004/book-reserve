@@ -49,7 +49,7 @@ export class ReservationsService {
     );
   }
 
-  async findOne(reservationId: string) {
+  async findOne(reservationId: number) {
     const reservationFound = await this.reservationRepository.getReservation(
       reservationId,
     );
@@ -58,7 +58,7 @@ export class ReservationsService {
   }
 
   async update(
-    reservationId: string,
+    reservationId: number,
     { bookId, clientId, is_busy }: UpdateReservationDto,
   ) {
     const reservationFound = await this.reservationRepository.findOne({
@@ -83,7 +83,7 @@ export class ReservationsService {
     );
   }
 
-  async remove(reservationId: string) {
+  async remove(reservationId: number) {
     const reservationFound = await this.reservationRepository.findOne({
       where: { id: reservationId },
     });

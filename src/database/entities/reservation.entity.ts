@@ -5,8 +5,8 @@ import {} from '../enums';
 
 @Entity()
 export class Reservation extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
   @Column({ default: true })
   is_busy: boolean;
   @ManyToOne(() => Book, (book) => book.reservations)

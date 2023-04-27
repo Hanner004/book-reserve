@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateReservationDto {
-  @ApiProperty({ example: 'UUID' })
-  @IsUUID('all', { each: true })
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   @IsNotEmpty()
-  bookId: string;
-  @ApiProperty({ example: 'UUID' })
-  @IsUUID('all', { each: true })
+  bookId: number;
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   @IsNotEmpty()
-  clientId: string;
+  clientId: number;
 }

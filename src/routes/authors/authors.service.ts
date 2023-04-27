@@ -17,13 +17,13 @@ export class AuthorsService {
     return await this.authorRepository.getAuthors();
   }
 
-  async findOne(authorId: string) {
+  async findOne(authorId: number) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
     return authorFound;
   }
 
-  async update(authorId: string, updateAuthorDto: UpdateAuthorDto) {
+  async update(authorId: number, updateAuthorDto: UpdateAuthorDto) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
     return await this.authorRepository.update(
@@ -32,7 +32,7 @@ export class AuthorsService {
     );
   }
 
-  async remove(authorId: string) {
+  async remove(authorId: number) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
     return await this.authorRepository.update(

@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseUUIDPipe,
+  ParseIntPipe,
   Put,
   Query,
 } from '@nestjs/common';
@@ -35,7 +35,7 @@ export class ClientsController {
   }
 
   @Get('/:clientId')
-  async findOne(@Param('clientId', ParseUUIDPipe) clientId: string) {
+  async findOne(@Param('clientId', ParseIntPipe) clientId: number) {
     return await this.clientsService.findOne(clientId);
   }
 
@@ -46,14 +46,14 @@ export class ClientsController {
 
   @Put('/:clientId')
   async update(
-    @Param('clientId', ParseUUIDPipe) clientId: string,
+    @Param('clientId', ParseIntPipe) clientId: number,
     @Body() updateClientDto: UpdateClientDto,
   ) {
     return await this.clientsService.update(clientId, updateClientDto);
   }
 
   @Delete('/:clientId')
-  async remove(@Param('clientId', ParseUUIDPipe) clientId: string) {
+  async remove(@Param('clientId', ParseIntPipe) clientId: number) {
     return await this.clientsService.remove(clientId);
   }
 }

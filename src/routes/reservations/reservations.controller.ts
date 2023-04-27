@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseUUIDPipe,
+  ParseIntPipe,
   Put,
   Query,
 } from '@nestjs/common';
@@ -35,13 +35,13 @@ export class ReservationsController {
   }
 
   @Get('/:reservationId')
-  async findOne(@Param('reservationId', ParseUUIDPipe) reservationId: string) {
+  async findOne(@Param('reservationId', ParseIntPipe) reservationId: number) {
     return await this.reservationsService.findOne(reservationId);
   }
 
   @Put('/:reservationId')
   async update(
-    @Param('reservationId', ParseUUIDPipe) reservationId: string,
+    @Param('reservationId', ParseIntPipe) reservationId: number,
     @Body() updateReservationDto: UpdateReservationDto,
   ) {
     return await this.reservationsService.update(
@@ -51,7 +51,7 @@ export class ReservationsController {
   }
 
   @Delete('/:reservationId')
-  async remove(@Param('reservationId', ParseUUIDPipe) reservationId: string) {
+  async remove(@Param('reservationId', ParseIntPipe) reservationId: number) {
     return await this.reservationsService.remove(reservationId);
   }
 }

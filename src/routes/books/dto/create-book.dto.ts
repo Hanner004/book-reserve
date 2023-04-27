@@ -3,8 +3,8 @@ import {
   IsNotEmpty,
   IsString,
   IsPositive,
-  IsUUID,
   IsInt,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -21,12 +21,12 @@ export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
   library_location: string;
-  @ApiProperty({ example: 'UUID' })
-  @IsUUID('all', { each: true })
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   @IsNotEmpty()
-  authorId: string;
-  @ApiProperty({ example: 'UUID' })
-  @IsUUID('all', { each: true })
+  authorId: number;
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   @IsNotEmpty()
-  editorialId: string;
+  editorialId: number;
 }

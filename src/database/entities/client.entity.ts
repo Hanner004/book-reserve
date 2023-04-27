@@ -11,8 +11,8 @@ import {} from '../enums';
 
 @Entity()
 export class Client extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
   @Column()
   @Index('IDX_client_dni', { unique: true, where: `(deleted_at is null)` })
   dni: string;

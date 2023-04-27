@@ -17,7 +17,7 @@ export class EditorialsService {
     return await this.editorialRepository.getEditorials();
   }
 
-  async findOne(editorialId: string) {
+  async findOne(editorialId: number) {
     const editorialFound = await this.editorialRepository.getEditorial(
       editorialId,
     );
@@ -25,7 +25,7 @@ export class EditorialsService {
     return editorialFound;
   }
 
-  async update(editorialId: string, updateEditorialDto: UpdateEditorialDto) {
+  async update(editorialId: number, updateEditorialDto: UpdateEditorialDto) {
     const editorialFound = await this.editorialRepository.getEditorial(
       editorialId,
     );
@@ -36,7 +36,7 @@ export class EditorialsService {
     );
   }
 
-  async remove(editorialId: string) {
+  async remove(editorialId: number) {
     const editorialFound = await this.editorialRepository.getEditorial(
       editorialId,
     );
