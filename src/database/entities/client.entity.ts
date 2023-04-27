@@ -20,9 +20,9 @@ export class Client extends BaseEntity {
   name: string;
   @Column()
   lastname: string;
-  @Column({ nullable: true })
+  @Column()
   email: string;
-  @Column({ nullable: true })
+  @Column()
   phone: string;
   @OneToMany(() => Reservation, (reservation) => reservation.client)
   reservations: Reservation[];

@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsInt, IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CreateReservationDto {
   @ApiProperty({ example: 1 })
-  @IsNumber()
+  @IsPositive()
+  @IsInt()
   @IsNotEmpty()
   bookId: number;
   @ApiProperty({ example: 1 })
-  @IsNumber()
+  @IsPositive()
+  @IsInt()
   @IsNotEmpty()
   clientId: number;
 }
