@@ -1,10 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
 
 export class CreateClientDto {
   @ApiProperty({ example: '123456789' })
@@ -21,10 +16,10 @@ export class CreateClientDto {
   lastname: string;
   @ApiProperty({ example: 'testing@book.com' })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   email: string;
   @ApiProperty({ example: '+573003001234' })
   @IsPhoneNumber()
-  @IsOptional()
+  @IsNotEmpty()
   phone: string;
 }
