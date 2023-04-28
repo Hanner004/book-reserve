@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumberString, IsPositive } from 'class-validator';
+import { IsOptional, IsNumberString } from 'class-validator';
 
 export class QueryReservationsDto {
   @ApiProperty({ required: false })
