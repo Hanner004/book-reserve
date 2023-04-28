@@ -23,11 +23,16 @@ export class BookRepository extends Repository<Book> {
     if (error) throw error;
   }
 
-  async getBooks() {
-    return await this.createQueryBuilder('book')
+  async getBooks(book_name: string) {
+    const query = this.createQueryBuilder('book')
       .leftJoinAndSelect('book.author', 'author')
-      .leftJoinAndSelect('book.editorial', 'editorial')
-      .getRawMany();
+      .leftJoinAndSelect('book.editorial', 'editorial');
+    if (book_name) {
+      query.where('book.name ilike :book_name', {
+        book_name: `%${book_name}%`,
+      });
+    }
+    return await query.getRawMany();
   }
 
   async getBook(bookId: number) {

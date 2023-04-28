@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
+import { QueryBooksDto } from './dto/query-books.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import {
   BookRepository,
@@ -39,8 +40,8 @@ export class BooksService {
     }
   }
 
-  async findAll() {
-    return await this.bookRepository.getBooks();
+  async findAll(data: QueryBooksDto) {
+    return await this.bookRepository.getBooks(data.book_name);
   }
 
   async findOne(bookId: number) {

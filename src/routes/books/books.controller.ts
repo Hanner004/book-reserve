@@ -8,11 +8,13 @@ import {
   UseGuards,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
+import { QueryBooksDto } from './dto/query-books.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 // @UseGuards(AccessTokenGuard)
@@ -28,8 +30,8 @@ export class BooksController {
   }
 
   @Get()
-  async findAll() {
-    return await this.booksService.findAll();
+  async findAll(@Query() data: QueryBooksDto) {
+    return await this.booksService.findAll(data);
   }
 
   @Get('/:bookId')

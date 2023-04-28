@@ -6,7 +6,9 @@ export class ClientRepository extends Repository<Client> {
   async getClients(client_dni: string) {
     const query = this.createQueryBuilder('client');
     if (client_dni) {
-      query.where('client.dni = :client_dni', { client_dni });
+      query.where('client.dni ilike :client_dni', {
+        client_dni: `%${client_dni}%`,
+      });
     }
     return await query.getRawMany();
   }
