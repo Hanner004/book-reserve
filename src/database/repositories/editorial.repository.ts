@@ -4,7 +4,9 @@ import { Editorial } from '../entities';
 @EntityRepository(Editorial)
 export class EditorialRepository extends Repository<Editorial> {
   async getEditorials() {
-    return await this.createQueryBuilder('editorial').getRawMany();
+    return await this.createQueryBuilder('editorial')
+      .orderBy('editorial.created_at', 'DESC')
+      .getRawMany();
   }
 
   async getEditorial(editorialId: number) {
