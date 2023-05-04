@@ -5,7 +5,7 @@ import { Author } from '../entities';
 export class AuthorRepository extends Repository<Author> {
   async getAuthors() {
     return await this.createQueryBuilder('author')
-      .orderBy('author.created_at', 'DESC')
+      .orderBy('author.id', 'DESC')
       .getRawMany();
   }
 

@@ -10,7 +10,7 @@ export class ClientRepository extends Repository<Client> {
         client_dni: `%${client_dni}%`,
       });
     }
-    query.orderBy('client.created_at', 'DESC');
+    query.orderBy('client.id', 'DESC');
     return await query.getRawMany();
   }
 

@@ -16,7 +16,7 @@ export class ReservationRepository extends Repository<Reservation> {
     if (clientId) {
       query.andWhere('client.id = :clientId', { clientId });
     }
-    query.orderBy('reservation.created_at', 'DESC');
+    query.orderBy('reservation.id', 'DESC');
     return await query.getRawMany();
   }
 

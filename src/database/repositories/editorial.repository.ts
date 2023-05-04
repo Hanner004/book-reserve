@@ -5,7 +5,7 @@ import { Editorial } from '../entities';
 export class EditorialRepository extends Repository<Editorial> {
   async getEditorials() {
     return await this.createQueryBuilder('editorial')
-      .orderBy('editorial.created_at', 'DESC')
+      .orderBy('editorial.id', 'DESC')
       .getRawMany();
   }
 

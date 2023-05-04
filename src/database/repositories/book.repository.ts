@@ -32,7 +32,7 @@ export class BookRepository extends Repository<Book> {
         book_name: `%${book_name}%`,
       });
     }
-    query.orderBy('book.created_at', 'DESC');
+    query.orderBy('book.id', 'DESC');
     return await query.getRawMany();
   }
 
