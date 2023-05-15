@@ -50,7 +50,7 @@ async function bootstrap() {
   });
 
   const port = configService.get<number>('HTTP_SERVER_PORT');
-  await app.listen(port, () => {
+  await app.listen(port, '0.0.0.0', () => {
     logger.log('APP', `${proyect} is running on http://localhost:${port}`);
     logger.debug(
       'APP',
