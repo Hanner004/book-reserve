@@ -5,7 +5,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { hashSync } from 'bcryptjs';
 import { UserRepository } from 'src/database/repositories';
 import { UserRoleEnum } from 'src/database/enums';
-import { response } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +21,7 @@ export class UsersService {
       delete user.password;
       return user;
     } catch (error) {
+      // console.log(error);
       throw new ConflictException('email already exists');
     }
   }
