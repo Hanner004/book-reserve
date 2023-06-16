@@ -1,8 +1,13 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/database/repositories';
 import { LoginDto } from './dto/login.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 import { compareSync, hashSync } from 'bcryptjs';
 
@@ -35,11 +40,11 @@ export class AuthService {
   async loginWeb({ email, password }: LoginDto) {
     const userFound = await this.userRepository.findOne({
       where: { email },
-      select: ['id', 'is_deleted', 'password'],
+      select: ['id', 'is_deleted', 'password', 'role'],
     });
     if (
       !userFound ||
-      userFound.is_deleted === false ||
+      userFound.is_deleted === true ||
       (userFound && compareSync(password, userFound.password) == false)
     )
       throw new BadRequestException('email or password invalid');
@@ -48,5 +53,14 @@ export class AuthService {
       role: userFound.role,
     });
     return { role: userFound.role, ...tokens };
+  }
+
+  async updatePassword({ email, newPassword }: UpdatePasswordDto) {
+    const userFound = await this.userRepository.findOne({
+      where: { email },
+    });
+    if (!userFound) throw new NotFoundException('email not found');
+    userFound.password = hashSync(newPassword, 10);
+    return await this.userRepository.save(userFound);
   }
 }
