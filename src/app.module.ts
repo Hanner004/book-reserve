@@ -17,6 +17,7 @@ import { AuthorsModule } from './routes/authors/authors.module';
 import { BooksModule } from './routes/books/books.module';
 import { ClientsModule } from './routes/clients/clients.module';
 import { ReservationsModule } from './routes/reservations/reservations.module';
+import { AuthModule } from './routes/auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReservationsModule } from './routes/reservations/reservations.module';
     BooksModule,
     ClientsModule,
     ReservationsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
