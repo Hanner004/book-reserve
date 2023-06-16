@@ -61,6 +61,7 @@ export class AuthService {
     });
     if (!userFound) throw new NotFoundException('email not found');
     userFound.password = hashSync(newPassword, 10);
-    return await this.userRepository.save(userFound);
+    await this.userRepository.save(userFound);
+    return { message: 'OK' };
   }
 }
