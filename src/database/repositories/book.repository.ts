@@ -24,7 +24,7 @@ export class BookRepository extends Repository<Book> {
   }
 
   async getBooks(book_name: string) {
-    
+
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
       .select('COUNT(sq_reservation.id)')
@@ -32,10 +32,16 @@ export class BookRepository extends Repository<Book> {
       .where('sq_book.id = book.id')
       .andWhere('sq_reservation.is_busy = true');
 
-    const query = this.createQueryBuilder('book').select([
-      'book',
-      `CAST((${sq.getQuery()}) AS INTEGER) AS book_current_amount_occupied`,
-    ]);
+    const query = this.createQueryBuilder('book')
+      .select([
+        'book',
+        'author.name',
+        'author.lastname',
+        'editorial.name',
+        `CAST((${sq.getQuery()}) AS INTEGER) AS book_current_amount_occupied`,
+      ])
+      .leftJoin('book.author', 'author')
+      .leftJoin('book.editorial', 'editorial');
 
     if (book_name) {
       query.where('book.name ilike :book_name', {
@@ -43,7 +49,7 @@ export class BookRepository extends Repository<Book> {
       });
     }
 
-    query.groupBy('book.id');
+    query.groupBy('book.id, author.name, author.lastname, editorial.name');
     query.orderBy('book.id', 'DESC');
     return await query.getRawMany();
 
@@ -69,6 +75,6 @@ export class BookRepository extends Repository<Book> {
       ...book,
       book_current_amount_occupied: +book_current_amount_occupied,
     };
-
+    
   }
 }
