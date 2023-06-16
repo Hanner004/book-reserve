@@ -12,12 +12,13 @@ export class UsersService {
 
   async createAdministrator({ email, password }: CreateUserDto) {
     try {
-      const newAdmin = this.userRepository.create({
-        email,
-        password: hashSync(password, 10),
-        role: UserRoleEnum.ADMINISTRATOR,
-      });
-      const user = await this.userRepository.save(newAdmin);
+      const user = await this.userRepository.save(
+        this.userRepository.create({
+          email,
+          password: hashSync(password, 10),
+          role: UserRoleEnum.ADMINISTRATOR,
+        }),
+      );
       delete user.password;
       return user;
     } catch (error) {
