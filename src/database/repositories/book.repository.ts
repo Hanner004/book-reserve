@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Book, Author, Editorial } from '../entities';
+import { EntityRepository, Repository, getManager } from 'typeorm';
+import { Book, Author, Editorial, Reservation } from '../entities';
 
 @EntityRepository(Book)
 export class BookRepository extends Repository<Book> {
@@ -24,23 +24,51 @@ export class BookRepository extends Repository<Book> {
   }
 
   async getBooks(book_name: string) {
-    const query = this.createQueryBuilder('book')
-      .leftJoinAndSelect('book.author', 'author')
-      .leftJoinAndSelect('book.editorial', 'editorial');
+
+    const sq = getManager()
+      .createQueryBuilder(Reservation, 'sq_reservation')
+      .select('COUNT(sq_reservation.id)')
+      .leftJoin('sq_reservation.book', 'sq_book')
+      .where('sq_book.id = book.id')
+      .andWhere('sq_reservation.is_busy = true');
+
+    const query = this.createQueryBuilder('book').select([
+      'book',
+      `CAST((${sq.getQuery()}) AS INTEGER) AS current_amount_occupied`,
+    ]);
+
     if (book_name) {
       query.where('book.name ilike :book_name', {
         book_name: `%${book_name}%`,
       });
     }
+
+    query.groupBy('book.id');
     query.orderBy('book.id', 'DESC');
     return await query.getRawMany();
+
   }
 
   async getBook(bookId: number) {
-    return await this.createQueryBuilder('book')
+
+    const { current_amount_occupied } = await getManager()
+      .createQueryBuilder(Reservation, 'sq_reservation')
+      .select('COUNT(sq_reservation.id) AS current_amount_occupied')
+      .leftJoin('sq_reservation.book', 'sq_book')
+      .where('sq_book.id = :bookId', { bookId })
+      .andWhere('sq_reservation.is_busy = true')
+      .getRawOne();
+
+    const book = await this.createQueryBuilder('book')
       .leftJoinAndSelect('book.author', 'author')
       .leftJoinAndSelect('book.editorial', 'editorial')
       .where('book.id = :bookId', { bookId })
       .getRawOne();
+
+    return {
+      ...book,
+      current_amount_occupied: +current_amount_occupied,
+    };
+
   }
 }
