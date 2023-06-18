@@ -5,5 +5,5 @@ export class QueryBooksDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  book_name: string;
+  query_string: string;
 }

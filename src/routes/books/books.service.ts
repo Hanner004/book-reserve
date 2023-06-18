@@ -41,7 +41,7 @@ export class BooksService {
   }
 
   async findAll(data: QueryBooksDto) {
-    return await this.bookRepository.getBooks(data.book_name);
+    return await this.bookRepository.getBooks(data.query_string);
   }
 
   async findOne(bookId: number) {

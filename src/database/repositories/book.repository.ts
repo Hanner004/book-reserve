@@ -23,7 +23,7 @@ export class BookRepository extends Repository<Book> {
     if (error) throw error;
   }
 
-  async getBooks(book_name: string) {
+  async getBooks(query_string: string) {
 
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
@@ -43,10 +43,11 @@ export class BookRepository extends Repository<Book> {
       .leftJoin('book.author', 'author')
       .leftJoin('book.editorial', 'editorial');
 
-    if (book_name) {
-      query.where('book.name ilike :book_name', {
-        book_name: `%${book_name}%`,
-      });
+    if (query_string) {
+      query.where(
+        `concat(book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name) ilike :query_string`,
+        { query_string: `%${query_string}%` },
+      );
     }
 
     query.groupBy('book.id, author.name, author.lastname, editorial.name');
