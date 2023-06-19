@@ -49,7 +49,11 @@ export class AuthorsService {
       name: capitalizeFirstLetter(name),
       lastname: capitalizeFirstLetter(lastname),
     };
-    await this.validateAuthor(authorToUpdate.name, authorToUpdate.lastname);
+    const newFullName = `${authorFound.author_name} ${authorFound.author_lastname}`;
+    const dto = `${authorToUpdate.name} ${authorToUpdate.lastname}`;
+    if (dto !== newFullName) {
+      await this.validateAuthor(authorToUpdate.name, authorToUpdate.lastname);
+    }
     return await this.authorRepository.update({ id: authorId }, authorToUpdate);
   }
 
