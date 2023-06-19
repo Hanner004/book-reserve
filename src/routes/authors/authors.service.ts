@@ -6,7 +6,6 @@ import {
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorRepository } from 'src/database/repositories';
-import { capitalizeFirstLetter } from 'src/utils/functions/formatString';
 
 @Injectable()
 export class AuthorsService {
@@ -22,13 +21,9 @@ export class AuthorsService {
   }
 
   async create({ name, lastname }: CreateAuthorDto) {
-    const newAuthor = {
-      name: capitalizeFirstLetter(name),
-      lastname: capitalizeFirstLetter(lastname),
-    };
-    await this.validateAuthor(newAuthor.name, newAuthor.lastname);
+    await this.validateAuthor(name, lastname);
     return await this.authorRepository.save(
-      this.authorRepository.create(newAuthor),
+      this.authorRepository.create({ name, lastname }),
     );
   }
 
@@ -45,16 +40,15 @@ export class AuthorsService {
   async update(authorId: number, { name, lastname }: UpdateAuthorDto) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
-    const authorToUpdate = {
-      name: capitalizeFirstLetter(name),
-      lastname: capitalizeFirstLetter(lastname),
-    };
     const newFullName = `${authorFound.author_name} ${authorFound.author_lastname}`;
-    const dto = `${authorToUpdate.name} ${authorToUpdate.lastname}`;
+    const dto = `${name} ${lastname}`;
     if (dto !== newFullName) {
-      await this.validateAuthor(authorToUpdate.name, authorToUpdate.lastname);
+      await this.validateAuthor(name, lastname);
     }
-    return await this.authorRepository.update({ id: authorId }, authorToUpdate);
+    return await this.authorRepository.update(
+      { id: authorId },
+      { name, lastname },
+    );
   }
 
   async remove(authorId: number) {

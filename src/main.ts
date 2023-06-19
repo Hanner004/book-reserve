@@ -12,7 +12,7 @@ async function bootstrap() {
   const configService = new ConfigService();
   const logger = new LoggerService();
   const app = await NestFactory.create(AppModule, { cors: true });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   // app.use(bodyParser.json({ limit: '50mb' }));
   // app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   app.enableCors({ origin: '*' });
