@@ -24,6 +24,9 @@ export class BookRepository extends Repository<Book> {
   }
 
   async queryBooks(query_string: string) {
+    if (!query_string) {
+      query_string = ``;
+    }
     return await this.query(
       `
       select
@@ -62,7 +65,7 @@ export class BookRepository extends Repository<Book> {
   }
 
   async getBooks(query_string: string) {
-    
+
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
       .select('COUNT(sq_reservation.id)')
@@ -153,6 +156,6 @@ export class BookRepository extends Repository<Book> {
       ...queryBook[0],
       book_current_amount_occupied: +book_current_amount_occupied,
     };
-
+    
   }
 }
