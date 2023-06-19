@@ -65,7 +65,7 @@ export class BookRepository extends Repository<Book> {
   }
 
   async getBooks(query_string: string) {
-
+    
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
       .select('COUNT(sq_reservation.id)')
@@ -152,10 +152,13 @@ export class BookRepository extends Repository<Book> {
     `,
     );
 
-    return {
-      ...queryBook[0],
-      book_current_amount_occupied: +book_current_amount_occupied,
-    };
-    
+    if (queryBook[0]) {
+      return {
+        ...queryBook[0],
+        book_current_amount_occupied: +book_current_amount_occupied,
+      };
+    }
+    return queryBook[0];
+
   }
 }
