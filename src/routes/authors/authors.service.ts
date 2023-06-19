@@ -26,7 +26,6 @@ export class AuthorsService {
       name: capitalizeFirstLetter(name),
       lastname: capitalizeFirstLetter(lastname),
     };
-    console.log(newAuthor);
     await this.validateAuthor(newAuthor.name, newAuthor.lastname);
     return await this.authorRepository.save(
       this.authorRepository.create(newAuthor),
@@ -50,7 +49,6 @@ export class AuthorsService {
       name: capitalizeFirstLetter(name),
       lastname: capitalizeFirstLetter(lastname),
     };
-    console.log(authorToUpdate);
     await this.validateAuthor(authorToUpdate.name, authorToUpdate.lastname);
     return await this.authorRepository.update({ id: authorId }, authorToUpdate);
   }

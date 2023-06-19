@@ -65,7 +65,7 @@ export class BookRepository extends Repository<Book> {
   }
 
   async getBooks(query_string: string) {
-    
+
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
       .select('COUNT(sq_reservation.id)')
@@ -95,6 +95,14 @@ export class BookRepository extends Repository<Book> {
     query.orderBy('book.id', 'DESC');
     return await query.getRawMany();
 
+  }
+
+  async getBookByName(name: string) {
+    return await this.createQueryBuilder('book')
+      .leftJoinAndSelect('book.author', 'author')
+      .leftJoinAndSelect('book.editorial', 'editorial')
+      .where('book.name = :name', { name })
+      .getRawOne();
   }
 
   async getBook(bookId: number) {
@@ -159,6 +167,6 @@ export class BookRepository extends Repository<Book> {
       };
     }
     return queryBook[0];
-
+    
   }
 }

@@ -14,4 +14,10 @@ export class EditorialRepository extends Repository<Editorial> {
       .where('editorial.id = :editorialId', { editorialId })
       .getRawOne();
   }
+
+  async getEditorialByName(name: string) {
+    return await this.createQueryBuilder('editorial')
+      .where('editorial.name = :name', { name })
+      .getRawOne();
+  }
 }
