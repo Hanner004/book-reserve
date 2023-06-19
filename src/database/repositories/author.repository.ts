@@ -14,4 +14,11 @@ export class AuthorRepository extends Repository<Author> {
       .where('author.id = :authorId', { authorId })
       .getRawOne();
   }
+
+  async getAuthorByFullName(name: string, lastname: string) {
+    return await this.createQueryBuilder('author')
+      .where('author.name = :name', { name })
+      .andWhere('author.lastname = :lastname', { lastname })
+      .getRawOne();
+  }
 }

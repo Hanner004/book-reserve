@@ -1,15 +1,35 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorRepository } from 'src/database/repositories';
+import { capitalizeFirstLetter } from 'src/utils/functions/formatString';
 
 @Injectable()
 export class AuthorsService {
   constructor(private authorRepository: AuthorRepository) {}
 
-  async create(createAuthorDto: CreateAuthorDto) {
+  async validateAuthor(name: string, lastname: string) {
+    const authorFound = await this.authorRepository.getAuthorByFullName(
+      name,
+      lastname,
+    );
+    if (authorFound)
+      throw new ConflictException('the author name is registered');
+  }
+
+  async create({ name, lastname }: CreateAuthorDto) {
+    const newAuthor = {
+      name: capitalizeFirstLetter(name),
+      lastname: capitalizeFirstLetter(lastname),
+    };
+    console.log(newAuthor);
+    await this.validateAuthor(newAuthor.name, newAuthor.lastname);
     return await this.authorRepository.save(
-      this.authorRepository.create(createAuthorDto),
+      this.authorRepository.create(newAuthor),
     );
   }
 
@@ -23,13 +43,16 @@ export class AuthorsService {
     return authorFound;
   }
 
-  async update(authorId: number, updateAuthorDto: UpdateAuthorDto) {
+  async update(authorId: number, { name, lastname }: UpdateAuthorDto) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
-    return await this.authorRepository.update(
-      { id: authorId },
-      { ...updateAuthorDto },
-    );
+    const authorToUpdate = {
+      name: capitalizeFirstLetter(name),
+      lastname: capitalizeFirstLetter(lastname),
+    };
+    console.log(authorToUpdate);
+    await this.validateAuthor(authorToUpdate.name, authorToUpdate.lastname);
+    return await this.authorRepository.update({ id: authorId }, authorToUpdate);
   }
 
   async remove(authorId: number) {
