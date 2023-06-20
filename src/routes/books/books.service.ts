@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { QueryBooksDto } from './dto/query-books.dto';
@@ -20,6 +21,11 @@ export class BooksService {
     private editorialRepository: EditorialRepository,
   ) {}
 
+  async validateBook(name: string) {
+    const bookFound = await this.bookRepository.getBookByName(name);
+    if (bookFound) throw new ConflictException('the book name is registered');
+  }
+
   async create({ authorId, editorialId, ...createBookDto }: CreateBookDto) {
     const authorFound = await this.authorRepository.findOne({
       where: { id: authorId },
@@ -29,6 +35,7 @@ export class BooksService {
       where: { id: editorialId },
     });
     if (!editorialFound) throw new NotFoundException('editorial not found');
+    await this.validateBook(createBookDto.name);
     try {
       return await this.bookRepository.createBook(
         this.bookRepository.create({ ...createBookDto }),
@@ -64,6 +71,11 @@ export class BooksService {
       where: { id: editorialId },
     });
     if (!editorialFound) throw new NotFoundException('editorial not found');
+    const nameBookFound = `${bookFound.book_name}`;
+    const dto = `${updateBookDto.name}`;
+    if (dto !== nameBookFound) {
+      await this.validateBook(updateBookDto.name);
+    }
     return await this.bookRepository.update(
       { id: bookId },
       {

@@ -99,8 +99,6 @@ export class BookRepository extends Repository<Book> {
 
   async getBookByName(name: string) {
     return await this.createQueryBuilder('book')
-      .leftJoinAndSelect('book.author', 'author')
-      .leftJoinAndSelect('book.editorial', 'editorial')
       .where('book.name = :name', { name })
       .getRawOne();
   }

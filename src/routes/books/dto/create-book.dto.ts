@@ -1,8 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, IsPositive, IsInt } from 'class-validator';
+import { capitalizeFirstLetter } from 'src/utils/functions/formatString';
 
 export class CreateBookDto {
   @ApiProperty({ example: 'Cien años de soledad' })
+  @Transform(({ value }) => capitalizeFirstLetter(value))
   @IsString()
   @IsNotEmpty()
   name: string;
