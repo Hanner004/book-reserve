@@ -40,9 +40,9 @@ export class AuthorsService {
   async update(authorId: number, { name, lastname }: UpdateAuthorDto) {
     const authorFound = await this.authorRepository.getAuthor(authorId);
     if (!authorFound) throw new NotFoundException('author not found');
-    const newFullName = `${authorFound.author_name} ${authorFound.author_lastname}`;
+    const fullNameFound = `${authorFound.author_name} ${authorFound.author_lastname}`;
     const dto = `${name} ${lastname}`;
-    if (dto !== newFullName) {
+    if (dto !== fullNameFound) {
       await this.validateAuthor(name, lastname);
     }
     return await this.authorRepository.update(
