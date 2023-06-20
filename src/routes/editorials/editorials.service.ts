@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateEditorialDto } from './dto/create-editorial.dto';
+import { QueryEditorialsDto } from './dto/query-editorials.dto';
 import { UpdateEditorialDto } from './dto/update-editorial.dto';
 import { EditorialRepository } from 'src/database/repositories';
 
@@ -26,8 +27,8 @@ export class EditorialsService {
     );
   }
 
-  async findAll() {
-    return await this.editorialRepository.getEditorials();
+  async findAll(data: QueryEditorialsDto) {
+    return await this.editorialRepository.getEditorials(data.query_string);
   }
 
   async findOne(editorialId: number) {

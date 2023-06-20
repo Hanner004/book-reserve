@@ -8,11 +8,13 @@ import {
   UseGuards,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { QueryAuthorDto } from './dto/query-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 
 // @UseGuards(AccessTokenGuard)
@@ -28,8 +30,8 @@ export class AuthorsController {
   }
 
   @Get()
-  async findAll() {
-    return await this.authorsService.findAll();
+  async findAll(@Query() data: QueryAuthorDto) {
+    return await this.authorsService.findAll(data);
   }
 
   @Get('/:authorId')

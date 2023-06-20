@@ -8,11 +8,13 @@ import {
   UseGuards,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { EditorialsService } from './editorials.service';
 import { CreateEditorialDto } from './dto/create-editorial.dto';
+import { QueryEditorialsDto } from './dto/query-editorials.dto';
 import { UpdateEditorialDto } from './dto/update-editorial.dto';
 
 // @UseGuards(AccessTokenGuard)
@@ -28,8 +30,8 @@ export class EditorialsController {
   }
 
   @Get()
-  async findAll() {
-    return await this.editorialsService.findAll();
+  async findAll(@Query() data: QueryEditorialsDto) {
+    return await this.editorialsService.findAll(data);
   }
 
   @Get('/:editorialId')

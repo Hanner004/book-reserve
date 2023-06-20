@@ -4,6 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { QueryAuthorDto } from './dto/query-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorRepository } from 'src/database/repositories';
 
@@ -27,8 +28,8 @@ export class AuthorsService {
     );
   }
 
-  async findAll() {
-    return await this.authorRepository.getAuthors();
+  async findAll(data: QueryAuthorDto) {
+    return await this.authorRepository.getAuthors(data.query_string);
   }
 
   async findOne(authorId: number) {
