@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsString, IsPositive, IsInt } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsPositive,
+  IsInt,
+  IsOptional,
+} from 'class-validator';
 import { capitalizeFirstLetter } from 'src/utils/functions/formatString';
 
 export class CreateBookDto {
@@ -18,6 +24,10 @@ export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
   library_location: string;
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  isbn_code: string;
   @ApiProperty({ example: 1 })
   @IsPositive()
   @IsInt()

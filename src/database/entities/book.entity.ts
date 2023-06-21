@@ -19,6 +19,8 @@ export class Book extends BaseEntity {
   available_quantity: number;
   @Column()
   library_location: string;
+  @Column({ nullable: true })
+  isbn_code: string;
   @ManyToOne(() => Author, (author) => author.books)
   author: Author;
   @ManyToOne(() => Editorial, (editorial) => editorial.books)

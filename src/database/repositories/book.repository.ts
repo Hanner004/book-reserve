@@ -38,6 +38,7 @@ export class BookRepository extends Repository<Book> {
         "book"."name" as "book_name",
         "book"."available_quantity" as "book_available_quantity",
         "book"."library_location" as "book_library_location",
+        "book"."isbn_code" as "book_isbn_code",
         "book"."authorId" as "book_authorId",
         "book"."editorialId" as "book_editorialId",
         "author"."name" as "author_name",
@@ -51,7 +52,7 @@ export class BookRepository extends Repository<Book> {
       left join "editorial" "editorial" on
         "editorial"."id" = "book"."editorialId"
       where
-        ( concat("book"."name", ' ', "author"."name", ' ', "author"."lastname", ' ', "editorial"."name") ilike '%${query_string}%' )
+        ( concat("book"."name", ' ', "author"."name", ' ', "author"."lastname", ' ', "editorial"."name", ' ', "book"."isbn_code", ' ', "book"."library_location") ilike '%${query_string}%' )
         and ( "book"."deleted_at" is null )
       group by
         "book"."id",
@@ -86,7 +87,7 @@ export class BookRepository extends Repository<Book> {
 
     if (query_string) {
       query.where(
-        `concat(book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name) ilike :query_string`,
+        `concat(book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name, ' ', book.isbn_code, ' ', book.library_location) ilike :query_string`,
         { query_string: `%${query_string}%` },
       );
     }
@@ -130,6 +131,7 @@ export class BookRepository extends Repository<Book> {
         "book"."name" as "book_name",
         "book"."available_quantity" as "book_available_quantity",
         "book"."library_location" as "book_library_location",
+        "book"."isbn_code" as "book_isbn_code",
         "book"."authorId" as "book_authorId",
         "book"."editorialId" as "book_editorialId",
         "author"."created_at" as "author_created_at",
