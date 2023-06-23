@@ -3,12 +3,13 @@ import { Client } from '../entities';
 
 @EntityRepository(Client)
 export class ClientRepository extends Repository<Client> {
-  async getClients(client_dni: string) {
+  async getClients(query_string: string) {
     const query = this.createQueryBuilder('client');
-    if (client_dni) {
-      query.where('client.dni ilike :client_dni', {
-        client_dni: `%${client_dni}%`,
-      });
+    if (query_string) {
+      query.where(
+        `concat(client.name, ' ', client.lastname, ' ', client.dni, ' ', client.email, ' ', client.phone) ilike :query_string`,
+        { query_string: `%${query_string}%` },
+      );
     }
     query.orderBy('client.id', 'DESC');
     return await query.getRawMany();

@@ -5,5 +5,5 @@ export class QueryClientsDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  client_dni: string;
+  query_string: string;
 }

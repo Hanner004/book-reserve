@@ -12,18 +12,20 @@ import { ClientRepository } from 'src/database/repositories';
 export class ClientsService {
   constructor(private clientRepository: ClientRepository) {}
 
+  async validateClient(dni: string) {
+    const dniFound = await this.clientRepository.findOne({ where: { dni } });
+    if (dniFound) throw new ConflictException('the client dni is registered');
+  }
+
   async create(createClientDto: CreateClientDto) {
-    try {
-      return await this.clientRepository.save(
-        this.clientRepository.create(createClientDto),
-      );
-    } catch (error) {
-      throw new ConflictException(error.detail);
-    }
+    await this.validateClient(createClientDto.dni);
+    return await this.clientRepository.save(
+      this.clientRepository.create(createClientDto),
+    );
   }
 
   async findAll(data: QueryClientsDto) {
-    return await this.clientRepository.getClients(data.client_dni);
+    return await this.clientRepository.getClients(data.query_string);
   }
 
   async findOne(clientId: number) {
@@ -41,6 +43,11 @@ export class ClientsService {
   async update(clientId: number, updateClientDto: UpdateClientDto) {
     const clientFound = await this.clientRepository.getClient(clientId);
     if (!clientFound) throw new NotFoundException('client not found');
+    const dniFound = `${clientFound.client_dni}`;
+    const dto = `${updateClientDto.dni}`;
+    if (dto !== dniFound) {
+      await this.validateClient(updateClientDto.dni);
+    }
     return await this.clientRepository.update(
       { id: clientId },
       { ...updateClientDto },
