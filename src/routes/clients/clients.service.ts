@@ -12,13 +12,22 @@ import { ClientRepository } from 'src/database/repositories';
 export class ClientsService {
   constructor(private clientRepository: ClientRepository) {}
 
-  async validateClient(dni: string) {
+  async validateClientDNI(dni: string) {
     const dniFound = await this.clientRepository.findOne({ where: { dni } });
     if (dniFound) throw new ConflictException('the client dni is registered');
   }
 
+  async validateEmailClient(email: string) {
+    const emailFound = await this.clientRepository.findOne({
+      where: { email },
+    });
+    if (emailFound)
+      throw new ConflictException('the client email is registered');
+  }
+
   async create(createClientDto: CreateClientDto) {
-    await this.validateClient(createClientDto.dni);
+    await this.validateClientDNI(createClientDto.dni);
+    await this.validateEmailClient(createClientDto.email);
     return await this.clientRepository.save(
       this.clientRepository.create(createClientDto),
     );
@@ -41,17 +50,27 @@ export class ClientsService {
   }
 
   async update(clientId: number, updateClientDto: UpdateClientDto) {
+
     const clientFound = await this.clientRepository.getClient(clientId);
     if (!clientFound) throw new NotFoundException('client not found');
+
     const dniFound = `${clientFound.client_dni}`;
-    const dto = `${updateClientDto.dni}`;
-    if (dto !== dniFound) {
-      await this.validateClient(updateClientDto.dni);
+    const dtoDNI = `${updateClientDto.dni}`;
+    if (dtoDNI !== dniFound) {
+      await this.validateClientDNI(updateClientDto.dni);
     }
+
+    const emailFound = `${clientFound.client_email}`;
+    const dtoEmail = `${updateClientDto.email}`;
+    if (dtoEmail !== emailFound) {
+      await this.validateEmailClient(updateClientDto.email);
+    }
+
     return await this.clientRepository.update(
       { id: clientId },
       { ...updateClientDto },
     );
+
   }
 
   async remove(clientId: number) {
