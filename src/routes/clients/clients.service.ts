@@ -70,7 +70,7 @@ export class ClientsService {
       { id: clientId },
       { ...updateClientDto },
     );
-
+    
   }
 
   async remove(clientId: number) {
