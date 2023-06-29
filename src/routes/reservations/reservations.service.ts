@@ -61,40 +61,40 @@ export class ReservationsService {
     reservationId: number,
     { bookId, clientId, is_busy }: UpdateReservationDto,
   ) {
-    const reservationFound = await this.reservationRepository.findOne({
-      where: { id: reservationId },
-    });
-    if (!reservationFound) throw new NotFoundException('reservation not found');
-    const bookFound = await this.bookRepository.findOne({
-      where: { id: bookId },
-    });
-    if (!bookFound) throw new NotFoundException('book not found');
-    const clientFound = await this.clientRepository.findOne({
-      where: { id: clientId },
-    });
-    if (!clientFound) throw new NotFoundException('client not found');
-    return await this.reservationRepository.update(
-      { id: reservationId },
-      {
-        book: bookFound,
-        client: clientFound,
-        is_busy,
-      },
-    );
+    // const reservationFound = await this.reservationRepository.findOne({
+    //   where: { id: reservationId },
+    // });
+    // if (!reservationFound) throw new NotFoundException('reservation not found');
+    // const bookFound = await this.bookRepository.findOne({
+    //   where: { id: bookId },
+    // });
+    // if (!bookFound) throw new NotFoundException('book not found');
+    // const clientFound = await this.clientRepository.findOne({
+    //   where: { id: clientId },
+    // });
+    // if (!clientFound) throw new NotFoundException('client not found');
+    // return await this.reservationRepository.update(
+    //   { id: reservationId },
+    //   {
+    //     book: bookFound,
+    //     client: clientFound,
+    //     is_busy,
+    //   },
+    // );
   }
 
   async remove(reservationId: number) {
-    const reservationFound = await this.reservationRepository.findOne({
-      where: { id: reservationId },
-    });
-    if (!reservationFound) throw new NotFoundException('reservation not found');
-    return await this.reservationRepository.update(
-      { id: reservationId },
-      {
-        deleted_at: new Date(),
-        is_deleted: true,
-        is_busy: false,
-      },
-    );
+    // const reservationFound = await this.reservationRepository.findOne({
+    //   where: { id: reservationId },
+    // });
+    // if (!reservationFound) throw new NotFoundException('reservation not found');
+    // return await this.reservationRepository.update(
+    //   { id: reservationId },
+    //   {
+    //     deleted_at: new Date(),
+    //     is_deleted: true,
+    //     is_busy: false,
+    //   },
+    // );
   }
 }

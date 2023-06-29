@@ -24,6 +24,8 @@ export class Client extends BaseEntity {
   email: string;
   @Column()
   phone: string;
+  @Column({ default: true })
+  data_processing: boolean;
   @OneToMany(() => Reservation, (reservation) => reservation.client)
   reservations: Reservation[];
 }

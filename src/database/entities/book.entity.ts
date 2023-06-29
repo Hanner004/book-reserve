@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './shared/base.entity';
-import { Author, Editorial, Reservation } from '../entities';
+import { Author, Editorial, ReservationBook } from '../entities';
 import {} from '../enums';
 
 @Entity()
@@ -25,6 +25,6 @@ export class Book extends BaseEntity {
   author: Author;
   @ManyToOne(() => Editorial, (editorial) => editorial.books)
   editorial: Editorial;
-  @OneToMany(() => Reservation, (reservation) => reservation.book)
-  reservations: Reservation[];
+  @OneToMany(() => ReservationBook, (reservationBook) => reservationBook.book)
+  reservationBooks: ReservationBook[];
 }

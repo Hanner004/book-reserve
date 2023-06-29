@@ -40,27 +40,5 @@ export class ReservationRepository extends Repository<Reservation> {
     return { number_reservations: +response.number_reservations };
   }
 
-  async createReservation(
-    newReservation: Reservation,
-    book: Book,
-    client: Client,
-  ) {
-    const queryRunner = this.manager.connection.createQueryRunner();
-    let error: any;
-    await queryRunner.startTransaction();
-    try {
-      newReservation.book = book;
-      newReservation.client = client;
-      const reservationSaved = await queryRunner.manager.save(newReservation);
-      await queryRunner.commitTransaction();
-      return reservationSaved;
-    } catch (e) {
-      error = e;
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-    console.log(error);
-    if (error) throw error;
-  }
+  async createReservation(newReservation: Reservation, book: Book, client: Client) {}
 }
