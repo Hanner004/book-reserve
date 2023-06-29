@@ -40,5 +40,9 @@ export class ReservationRepository extends Repository<Reservation> {
     return { number_reservations: +response.number_reservations };
   }
 
-  async createReservation(newReservation: Reservation, book: Book, client: Client) {}
+  async createReservation(
+    newReservation: Reservation,
+    book: Book,
+    client: Client,
+  ) {}
 }
