@@ -27,7 +27,7 @@ export class BookRepository extends Repository<Book> {
     //
     const sq = getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
-      .select('COUNT(sq_reservationBooks.id)')
+      .select(`SUM(sq_reservationBooks.quantity)`)
       .leftJoin('sq_reservation.reservationBooks', 'sq_reservationBooks')
       .leftJoin('sq_reservationBooks.book', 'sq_book')
       .where('sq_book.id = book.id')
@@ -39,7 +39,7 @@ export class BookRepository extends Repository<Book> {
         'author.name',
         'author.lastname',
         'editorial.name',
-        `CAST((${sq.getQuery()}) AS INTEGER) AS book_current_amount_occupied`,
+        `CAST(COALESCE((${sq.getQuery()}), 0) AS INTEGER) AS book_current_amount_occupied`,
       ])
       .leftJoin('book.author', 'author')
       .leftJoin('book.editorial', 'editorial');
@@ -67,7 +67,9 @@ export class BookRepository extends Repository<Book> {
     //
     const { book_current_amount_occupied } = await getManager()
       .createQueryBuilder(Reservation, 'sq_reservation')
-      .select('COUNT(sq_reservationBooks.id) AS book_current_amount_occupied')
+      .select(
+        'SUM(sq_reservationBooks.quantity) AS book_current_amount_occupied',
+      )
       .leftJoin('sq_reservation.reservationBooks', 'sq_reservationBooks')
       .leftJoin('sq_reservationBooks.book', 'sq_book')
       .where('sq_book.id = :bookId', { bookId })

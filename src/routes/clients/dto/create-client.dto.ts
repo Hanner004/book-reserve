@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
   IsLowercase,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
@@ -38,4 +40,8 @@ export class CreateClientDto {
   @IsPhoneNumber()
   @IsNotEmpty()
   phone: string;
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  @IsOptional()
+  data_processing: boolean;
 }
