@@ -39,7 +39,7 @@ export class ReservationsController {
     return await this.reservationsService.findOne(reservationId);
   }
 
-  @Put('/:reservationId')
+  // @Put('/:reservationId')
   async update(
     @Param('reservationId', ParseIntPipe) reservationId: number,
     @Body() updateReservationDto: UpdateReservationDto,

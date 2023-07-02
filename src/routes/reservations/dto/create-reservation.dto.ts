@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsPositive } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  ArrayNotEmpty,
+  IsInt,
+  IsNotEmpty,
+  IsPositive,
+  ValidateNested,
+} from 'class-validator';
 
-export class CreateReservationDto {
+class BookInfo {
   @ApiProperty({ example: 1 })
   @IsPositive()
   @IsInt()
@@ -11,5 +18,18 @@ export class CreateReservationDto {
   @IsPositive()
   @IsInt()
   @IsNotEmpty()
+  quantity: number;
+}
+
+export class CreateReservationDto {
+  @ApiProperty({ example: 1 })
+  @IsPositive()
+  @IsInt()
+  @IsNotEmpty()
   clientId: number;
+  @ApiProperty({ type: [BookInfo] })
+  @ValidateNested({ each: true })
+  @Type(() => BookInfo)
+  @ArrayNotEmpty()
+  books: BookInfo[];
 }

@@ -1,13 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNumberString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class QueryReservationsDto {
   @ApiProperty({ required: false })
-  @IsNumberString()
+  @IsString()
   @IsOptional()
-  bookId: number;
-  @ApiProperty({ required: false })
-  @IsNumberString()
-  @IsOptional()
-  clientId: number;
+  query_string: string;
 }

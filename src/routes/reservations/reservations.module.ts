@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   BookRepository,
   ClientRepository,
+  ReservationBookRepository,
   ReservationRepository,
 } from 'src/database/repositories';
 
@@ -14,6 +15,7 @@ import {
       ReservationRepository,
       BookRepository,
       ClientRepository,
+      ReservationBookRepository,
     ]),
   ],
   controllers: [ReservationsController],
