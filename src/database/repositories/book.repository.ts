@@ -1,5 +1,6 @@
 import { EntityRepository, Repository, getManager } from 'typeorm';
 import { Book, Author, Editorial, Reservation } from '../entities';
+import { ReservationStatusEnum } from '../enums';
 
 @EntityRepository(Book)
 export class BookRepository extends Repository<Book> {
@@ -31,7 +32,7 @@ export class BookRepository extends Repository<Book> {
       .leftJoin('sq_reservation.reservationBooks', 'sq_reservationBooks')
       .leftJoin('sq_reservationBooks.book', 'sq_book')
       .where('sq_book.id = book.id')
-      .andWhere('sq_reservation.is_busy = true');
+      .andWhere(`sq_reservation.status = '${ReservationStatusEnum.ACTIVE}'`);
 
     const query = this.createQueryBuilder('book')
       .select([
@@ -73,7 +74,7 @@ export class BookRepository extends Repository<Book> {
       .leftJoin('sq_reservation.reservationBooks', 'sq_reservationBooks')
       .leftJoin('sq_reservationBooks.book', 'sq_book')
       .where('sq_book.id = :bookId', { bookId })
-      .andWhere('sq_reservation.is_busy = true')
+      .andWhere(`sq_reservation.status = '${ReservationStatusEnum.ACTIVE}'`)
       .getRawOne();
 
     const book = await this.createQueryBuilder('book')

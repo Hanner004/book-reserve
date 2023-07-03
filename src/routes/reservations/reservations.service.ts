@@ -7,6 +7,7 @@ import {
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { QueryReservationsDto } from './dto/query-reservations.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { ReservationStatusEnum } from 'src/database/enums';
 import { ReservationBook } from 'src/database/entities';
 import {
   BookRepository,
@@ -73,20 +74,37 @@ export class ReservationsService {
     return reservationFound;
   }
 
-  async update(reservationId: number, data: UpdateReservationDto) {}
-
-  async remove(reservationId: number) {
+  async finalize(reservationId: number) {
     const reservationFound = await this.reservationRepository.findOne({
       where: { id: reservationId },
+      withDeleted: true,
     });
     if (!reservationFound) throw new NotFoundException('reservation not found');
+    if (reservationFound.status !== ReservationStatusEnum.ACTIVE)
+      throw new ConflictException('the reserve must be active');
+    return await this.reservationRepository.update(
+      { id: reservationId },
+      {
+        finalized_at: new Date(),
+        status: ReservationStatusEnum.FINALIZED,
+      },
+    );
+  }
+
+  async delete(reservationId: number) {
+    const reservationFound = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+      withDeleted: true,
+    });
+    if (!reservationFound) throw new NotFoundException('reservation not found');
+    if (reservationFound.status !== ReservationStatusEnum.ACTIVE)
+      throw new ConflictException('the reserve must be active');
     return await this.reservationRepository.update(
       { id: reservationId },
       {
         deleted_at: new Date(),
         is_deleted: true,
-        is_busy: false,
-        delivered_at: new Date(),
+        status: ReservationStatusEnum.DELETED,
       },
     );
   }

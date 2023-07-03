@@ -7,16 +7,20 @@ import {
 } from 'typeorm';
 import { BaseEntity } from './shared/base.entity';
 import { Client, ReservationBook } from '../entities';
-import {} from '../enums';
+import { ReservationStatusEnum } from '../enums';
 
 @Entity()
 export class Reservation extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
-  @Column({ default: true })
-  is_busy: boolean;
   @Column({ type: 'timestamp', nullable: true })
-  delivered_at: Date;
+  finalized_at: Date;
+  @Column({
+    type: 'enum',
+    enum: ReservationStatusEnum,
+    default: ReservationStatusEnum.ACTIVE,
+  })
+  status: ReservationStatusEnum;
   @ManyToOne(() => Client, (client) => client.reservations)
   client: Client;
   @OneToMany(

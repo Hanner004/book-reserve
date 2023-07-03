@@ -1,5 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Client, Reservation, ReservationBook } from '../entities';
+import { ReservationStatusEnum } from '../enums';
 
 @EntityRepository(Reservation)
 export class ReservationRepository extends Repository<Reservation> {
@@ -35,6 +36,7 @@ export class ReservationRepository extends Repository<Reservation> {
 
   async getReservations(query_string: string) {
     const query = this.createQueryBuilder('reservation')
+      .withDeleted()
       .leftJoinAndSelect('reservation.client', 'client')
       .leftJoinAndSelect('reservation.reservationBooks', 'reservationBooks')
       .leftJoinAndSelect('reservationBooks.book', 'book')
@@ -54,6 +56,7 @@ export class ReservationRepository extends Repository<Reservation> {
 
   async getReservation(reservationId: number) {
     return await this.createQueryBuilder('reservation')
+      .withDeleted()
       .leftJoinAndSelect('reservation.client', 'client')
       .leftJoinAndSelect('reservation.reservationBooks', 'reservationBooks')
       .leftJoinAndSelect('reservationBooks.book', 'book')
@@ -67,17 +70,7 @@ export class ReservationRepository extends Repository<Reservation> {
     return await this.createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.client', 'client')
       .where('client.dni = :client_dni', { client_dni })
-      .andWhere('reservation.is_busy = :is_busy', { is_busy: true })
+      .andWhere(`reservation.status = '${ReservationStatusEnum.ACTIVE}'`)
       .getRawOne();
-  }
-
-  async getNumberOfBookReservations(bookId: number) {
-    const response = await this.createQueryBuilder('reservation')
-      .select('COALESCE(COUNT(*), 0) AS number_reservations')
-      .leftJoin('reservation.book', 'book')
-      .where('book.id = :bookId', { bookId })
-      .andWhere('reservation.is_busy = :is_busy', { is_busy: true })
-      .getRawOne();
-    return { number_reservations: +response.number_reservations };
   }
 }

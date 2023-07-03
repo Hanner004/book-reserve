@@ -5,6 +5,7 @@ import {
   Body,
   Param,
   Delete,
+  Patch,
   UseGuards,
   ParseIntPipe,
   Put,
@@ -39,19 +40,13 @@ export class ReservationsController {
     return await this.reservationsService.findOne(reservationId);
   }
 
-  // @Put('/:reservationId')
-  async update(
-    @Param('reservationId', ParseIntPipe) reservationId: number,
-    @Body() updateReservationDto: UpdateReservationDto,
-  ) {
-    return await this.reservationsService.update(
-      reservationId,
-      updateReservationDto,
-    );
+  @Delete('/:reservationId')
+  async delete(@Param('reservationId', ParseIntPipe) reservationId: number) {
+    return await this.reservationsService.delete(reservationId);
   }
 
-  @Delete('/:reservationId')
-  async remove(@Param('reservationId', ParseIntPipe) reservationId: number) {
-    return await this.reservationsService.remove(reservationId);
+  @Patch('/finalize/:reservationId')
+  async finalize(@Param('reservationId', ParseIntPipe) reservationId: number) {
+    return await this.reservationsService.finalize(reservationId);
   }
 }
