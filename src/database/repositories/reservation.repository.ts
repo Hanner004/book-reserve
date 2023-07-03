@@ -45,7 +45,7 @@ export class ReservationRepository extends Repository<Reservation> {
 
     if (query_string) {
       query.where(
-        `concat(book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name, ' ', book.isbn_code, ' ', book.library_location) ilike :query_string`,
+        `concat(client.name, ' ', client.lastname, ' ', client.dni, ' ', client.email, ' ', client.phone, ' ', book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name, ' ', book.isbn_code, ' ', book.library_location) ilike :query_string`,
         { query_string: `%${query_string}%` },
       );
     }
