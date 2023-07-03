@@ -37,19 +37,13 @@ export class ReservationRepository extends Repository<Reservation> {
   async getReservations(query_string: string) {
     const query = this.createQueryBuilder('reservation')
       .withDeleted()
-      .leftJoinAndSelect('reservation.client', 'client')
-      .leftJoinAndSelect('reservation.reservationBooks', 'reservationBooks')
-      .leftJoinAndSelect('reservationBooks.book', 'book')
-      .leftJoinAndSelect('book.author', 'author')
-      .leftJoinAndSelect('book.editorial', 'editorial');
-
+      .leftJoinAndSelect('reservation.client', 'client');
     if (query_string) {
       query.where(
-        `concat(client.name, ' ', client.lastname, ' ', client.dni, ' ', client.email, ' ', client.phone, ' ', book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name, ' ', book.isbn_code, ' ', book.library_location) ilike :query_string`,
+        `concat(client.name, ' ', client.lastname, ' ', client.dni, ' ', client.email, ' ', client.phone) ilike :query_string`,
         { query_string: `%${query_string}%` },
       );
     }
-
     query.orderBy('reservation.id', 'DESC');
     return await query.getRawMany();
   }
@@ -58,10 +52,6 @@ export class ReservationRepository extends Repository<Reservation> {
     return await this.createQueryBuilder('reservation')
       .withDeleted()
       .leftJoinAndSelect('reservation.client', 'client')
-      .leftJoinAndSelect('reservation.reservationBooks', 'reservationBooks')
-      .leftJoinAndSelect('reservationBooks.book', 'book')
-      .leftJoinAndSelect('book.author', 'author')
-      .leftJoinAndSelect('book.editorial', 'editorial')
       .where('reservation.id = :reservationId', { reservationId })
       .getRawOne();
   }
