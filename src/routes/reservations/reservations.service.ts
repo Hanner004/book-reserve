@@ -63,7 +63,10 @@ export class ReservationsService {
   }
 
   async findAll(data: QueryReservationsDto) {
-    return await this.reservationRepository.getReservations(data.query_string);
+    return await this.reservationRepository.getReservations(
+      data.query_string,
+      data.status,
+    );
   }
 
   async findOne(reservationId: number) {

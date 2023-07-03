@@ -34,7 +34,7 @@ export class ReservationRepository extends Repository<Reservation> {
     if (error) throw error;
   }
 
-  async getReservations(query_string: string) {
+  async getReservations(query_string: string, status: string) {
     const query = this.createQueryBuilder('reservation')
       .withDeleted()
       .leftJoinAndSelect('reservation.client', 'client');
@@ -43,6 +43,9 @@ export class ReservationRepository extends Repository<Reservation> {
         `concat(client.name, ' ', client.lastname, ' ', client.dni, ' ', client.email, ' ', client.phone) ilike :query_string`,
         { query_string: `%${query_string}%` },
       );
+    }
+    if (status) {
+      query.andWhere(`reservation.status = '${status}'`);
     }
     query.orderBy('reservation.id', 'DESC');
     return await query.getRawMany();
