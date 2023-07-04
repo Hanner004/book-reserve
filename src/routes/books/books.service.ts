@@ -64,9 +64,10 @@ export class BooksService {
     return books_available;
   }
 
-  async findBooksByReservation(reservationId: number) {
+  async findBooksByReservation(reservationId: number, data: QueryBooksDto) {
     return await this.reservationBookRepository.getBooksByReservation(
       reservationId,
+      data.query_string,
     );
   }
 

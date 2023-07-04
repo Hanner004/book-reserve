@@ -42,8 +42,9 @@ export class BooksController {
   @Get('/by-reservation/:reservationId')
   async findBooksByReservation(
     @Param('reservationId', ParseIntPipe) reservationId: number,
+    @Query() data: QueryBooksDto,
   ) {
-    return await this.booksService.findBooksByReservation(reservationId);
+    return await this.booksService.findBooksByReservation(reservationId, data);
   }
 
   @Get('/:bookId')
