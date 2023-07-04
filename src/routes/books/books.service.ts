@@ -53,6 +53,17 @@ export class BooksService {
     return await this.bookRepository.getBooks(data.query_string);
   }
 
+  async getBooksAvailable(data: QueryBooksDto) {
+    const array = await this.bookRepository.getBooks(data.query_string);
+    const results = array.map((item) => ({
+      ...item,
+      book_available:
+        item.book_available_quantity - item.book_current_amount_occupied,
+    }));
+    const books_available = results.filter((i) => i.book_available > 0);
+    return books_available;
+  }
+
   async findBooksByReservation(reservationId: number) {
     return await this.reservationBookRepository.getBooksByReservation(
       reservationId,

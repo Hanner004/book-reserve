@@ -34,6 +34,11 @@ export class BooksController {
     return await this.booksService.findAll(data);
   }
 
+  @Get('/available')
+  async getBooksAvailable(@Query() data: QueryBooksDto) {
+    return await this.booksService.getBooksAvailable(data);
+  }
+
   @Get('/by-reservation/:reservationId')
   async findBooksByReservation(
     @Param('reservationId', ParseIntPipe) reservationId: number,
