@@ -11,6 +11,7 @@ import {
   BookRepository,
   AuthorRepository,
   EditorialRepository,
+  ReservationBookRepository,
 } from 'src/database/repositories';
 
 @Injectable()
@@ -19,6 +20,7 @@ export class BooksService {
     private bookRepository: BookRepository,
     private authorRepository: AuthorRepository,
     private editorialRepository: EditorialRepository,
+    private reservationBookRepository: ReservationBookRepository,
   ) {}
 
   async validateBook(name: string) {
@@ -49,6 +51,12 @@ export class BooksService {
 
   async findAll(data: QueryBooksDto) {
     return await this.bookRepository.getBooks(data.query_string);
+  }
+
+  async findBooksByReservation(reservationId: number) {
+    return await this.reservationBookRepository.getBooksByReservation(
+      reservationId,
+    );
   }
 
   async findOne(bookId: number) {

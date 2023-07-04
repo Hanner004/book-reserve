@@ -6,6 +6,7 @@ import {
   AuthorRepository,
   BookRepository,
   EditorialRepository,
+  ReservationBookRepository,
 } from 'src/database/repositories';
 
 @Module({
@@ -14,6 +15,7 @@ import {
       BookRepository,
       AuthorRepository,
       EditorialRepository,
+      ReservationBookRepository,
     ]),
   ],
   controllers: [BooksController],
