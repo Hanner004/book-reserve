@@ -13,7 +13,7 @@ export class ReservationBookRepository extends Repository<ReservationBook> {
       .where('reservation.id = :reservationId', { reservationId });
 
     if (query_string) {
-      query.where(
+      query.andWhere(
         `concat(book.name, ' ', author.name, ' ', author.lastname, ' ', editorial.name, ' ', book.isbn_code, ' ', book.library_location) ilike :query_string`,
         { query_string: `%${query_string}%` },
       );
