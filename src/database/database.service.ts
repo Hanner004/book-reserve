@@ -17,6 +17,7 @@ export const databaseProvider = TypeOrmModule.forRootAsync({
       password: configService.get<string>('PGPASSWORD'),
       database: configService.get<string>('PGDATABASE'),
       logging: false,
+      ssl: true, // new
       entities: entitiesLists,
       synchronize: false,
       then: Logger.debug(
